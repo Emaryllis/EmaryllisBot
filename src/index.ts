@@ -1,45 +1,30 @@
-import {
-	Client,
-	GatewayDispatchEvents,
-	GatewayIntentBits,
-	InteractionType,
-	MessageFlags,
-} from '@discordjs/core';
-import { REST } from '@discordjs/rest';
-import { WebSocketManager } from '@discordjs/ws';
+import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 import 'dotenv/config';
 import ready from './listener/ready';
+const TOKEN = process.env.BOT_TOKEN || '';
+const CLIENT_ID = process.env.CLIENT_ID || '';
+(async () => {
+	const commands = [{ name: 'ping', description: 'Replies with Pong!' }];
+	const rest = new REST({ version: '10' }).setToken(TOKEN);
 
-// Create REST and WebSocket managers directly
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+	try {
+		console.info('Started refreshing application (/) commands.');
 
-const gateway = new WebSocketManager({
-	token: process.env.DISCORD_TOKEN,
-	intents: GatewayIntentBits.GuildMessages | GatewayIntentBits.MessageContent,
-	rest,
-});
+		await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
 
-// Create a client to emit relevant events.
-const client = new Client({ rest, gateway });
-
-// Listen for interactions
-// Each event contains an `api` prop along with the event data that allows you to interface with the Discord REST API
-client.on(GatewayDispatchEvents.InteractionCreate, async ({ data: interaction, api }) => {
-	if (
-		interaction.type !== InteractionType.ApplicationCommand ||
-		interaction.data.name !== 'ping'
-	) {
-		return;
+		console.info('Successfully reloaded application (/) commands.');
+	} catch (error) {
+		console.error(error);
 	}
+	const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-	await api.interactions.reply(interaction.id, interaction.token, {
-		content: 'Pong!',
-		flags: MessageFlags.Ephemeral,
+	ready(client);
+
+	client.on('interactionCreate', async interaction => {
+		if (!interaction.isChatInputCommand()) return;
+
+		if (interaction.commandName === 'ping') await interaction.reply('Pong!');
 	});
-});
 
-// Listen for the ready event
-ready(client)
-
-// Start the WebSocket connection.
-gateway.connect();
+	client.login(TOKEN);
+})();
