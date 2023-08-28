@@ -1,8 +1,10 @@
-import { Client } from 'discord.js';
+import { Client, Events } from 'discord.js';
+import slashHandler from '../slashHandler';
 
 export default (client: Client): void => {
-	client.on('ready', async () => {
-		if (!client.user || !client.application) return;
-		console.info(`${client.user.tag} is online`);
+	// We use 'c' for the event parameter to keep it separate from the already defined 'client'
+	client.once(Events.ClientReady, async c => {
+		await slashHandler();
+		console.info(`${c.user.tag} is ready!`);
 	});
 };
