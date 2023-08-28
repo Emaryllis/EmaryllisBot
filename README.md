@@ -19,6 +19,8 @@ To run this project, you will need to add the following environment variables to
 
 `CLIENT_ID` - Discord Bot's Client ID
 
+Your Discord Bot requires scopes "bot" & "applications.commands" for the program to function.
+
 ## Installation
 
 To install the dependencies with npm, run:
