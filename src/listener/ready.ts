@@ -1,8 +1,5 @@
-import { Client } from 'discord.js';
+import { Client, GatewayDispatchEvents } from '@discordjs/core';
 
 export default (client: Client): void => {
-	client.on('ready', async () => {
-		if (!client.user || !client.application) return;
-		console.info(`${client.user.tag} is online`);
-	});
+	client.once(GatewayDispatchEvents.Ready, () => console.log('Ready!'));
 };
