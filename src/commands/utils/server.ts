@@ -1,18 +1,13 @@
-import { EmbedBuilder, GuildMember, SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('server')
 		.setDescription('Provides information about the server.'),
 	async execute(interaction: {
-		guild: {
-			vanityURLCode: null;
-			fetchOwner(): Promise<GuildMember>;
-			name: string;
-			memberCount: string;
-		};
+		guild: { vanityURLCode: null; name: any; memberCount: any; fetchOwner: () => any };
 		reply: (arg0: { embeds: EmbedBuilder[] }) => any;
-	}) {
+	}): Promise<void> {
 		try {
 			const vanityURL =
 				interaction.guild.vanityURLCode === null

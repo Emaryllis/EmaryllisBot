@@ -17,24 +17,28 @@ module.exports = {
 			};
 		};
 		reply: (arg0: string) => any;
-	}) {
+	}): Promise<void> {
 		const commandName = interaction.options.getString('command', true).toLowerCase();
-		const command = interaction.client.commands.get(commandName);
 
+		//Check command to reload exists
+		const command = interaction.client.commands.get(commandName);
 		if (!command) {
 			return interaction.reply(`There is no command with name \`${commandName}\`!`);
 		}
+
+		// Cache invalidation
 		delete require.cache[require.resolve(`./${command.data.name}.ts`)];
 
+		// Delete old command data, store new command data into cache using require, and store new command data back to client.commands
 		try {
 			interaction.client.commands.delete(command.data.name);
 			const newCommand = require(`./${command.data.name}.ts`);
 			interaction.client.commands.set(newCommand.data.name, newCommand);
-			await interaction.reply(`Command \`${newCommand.data.name}\` was reloaded!`);
-		} catch (err) {
-			console.error(err);
+			await interaction.reply(`Reloaded \`${newCommand.data.name}\` (Success)`);
+		} catch (error) {
+			console.error(error);
 			await interaction.reply(
-				`There was an error while reloading a command \`${command.data.name}\`:\n\`${err.message}\``
+				`Reloaded \`${command.data.name}\` (**FAILED**)\n\n\`${error.message}\``
 			);
 		}
 	},

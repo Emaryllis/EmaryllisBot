@@ -1,23 +1,24 @@
-import { Client, GatewayIntentBits } from 'discord.js';
+const startTime = Date.now(); // Importing modules takes time so putting it here instead of the bottom will give a more accurate startup time
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import 'dotenv/config';
-import interactionCreate from './listener/interactionCreate';
-import ready from './listener/ready';
+import interactionCreate from './events/interactionCreate';
+import ready from './events/ready';
+import getCommands from './getCommands';
 import path = require('path');
 import fs = require('fs');
 const TOKEN = process.env.BOT_TOKEN || '';
-const CLIENT_ID = process.env.CLIENT_ID || '';
-const GUILD_ID = process.env.GUILD_ID || '';
-const COMMANDS_PATH = 'commands';
+export const COMMANDS_PATH = 'commands';
+
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+// Put command data to client as commands property for easy access
+client.commands = getCommands() as Collection<any, any>;
 
 // Slash command responses
 interactionCreate(client);
 
 // When the client is ready, run this code (only once)
-ready(client);
-
+ready(client, startTime);
 // Log in to Discord with client's token
 client.login(TOKEN);
-
-//
