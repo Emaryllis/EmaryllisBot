@@ -31,10 +31,10 @@ module.exports = {
 			const newCommand = require(`./${command.data.name}.ts`);
 			interaction.client.commands.set(newCommand.data.name, newCommand);
 			await interaction.reply(`Command \`${newCommand.data.name}\` was reloaded!`);
-		} catch (error) {
-			console.error(error);
+		} catch (err) {
+			console.error(err);
 			await interaction.reply(
-				`There was an error while reloading a command \`${command.data.name}\`:\n\`${error.message}\``
+				`There was an error while reloading a command \`${command.data.name}\`:\n\`${err.message}\``
 			);
 		}
 	},
