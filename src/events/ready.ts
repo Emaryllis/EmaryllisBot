@@ -9,7 +9,7 @@ export default (client: Client, timeTaken: number): void => {
 	console.info(`Started refreshing ${commands.length} application (/) commands.`);
 
 	// We use 'c' for the event parameter to keep it separate from the already defined 'client'
-	client.once(Events.ClientReady, async c => {
+	client.once(Events.ClientReady, async (c: Client) => {
 		try {
 			// The put method is used to fully refresh all commands in the guild with the current set
 			const data = await new REST()

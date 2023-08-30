@@ -1,4 +1,8 @@
-import { SlashCommandBuilder } from 'discord.js';
+import {
+	CommandInteraction,
+	CommandInteractionOptionResolver,
+	SlashCommandBuilder,
+} from 'discord.js';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,23 +11,16 @@ module.exports = {
 		.addStringOption(option =>
 			option.setName('command').setDescription('The command to reload.').setRequired(true)
 		),
-	async execute(interaction: {
-		options: { getString: (arg0: string, arg1: boolean) => string };
-		client: {
-			commands: {
-				get: (arg0: any) => any;
-				delete: (arg0: any) => void;
-				set: (arg0: any, arg1: any) => void;
-			};
-		};
-		reply: (arg0: string) => any;
-	}): Promise<void> {
-		const commandName = interaction.options.getString('command', true).toLowerCase();
+	async execute(interaction: CommandInteraction): Promise<void> {
+		const commandName = (interaction.options as CommandInteractionOptionResolver)
+			.getString('command', true)
+			.toLowerCase();
 
 		//Check command to reload exists
 		const command = interaction.client.commands.get(commandName);
 		if (!command) {
-			return interaction.reply(`There is no command with name \`${commandName}\`!`);
+			await interaction.reply(`There is no command with name \`${commandName}\`!`);
+			return;
 		}
 
 		// Cache invalidation
