@@ -1,11 +1,10 @@
 const startTime = Date.now(); // Importing modules takes time so putting it here instead of the bottom will give a more accurate startup time
+console.info('Bot starting up...');
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import 'dotenv/config';
 import interactionCreate from './events/interactionCreate';
 import ready from './events/ready';
 import getCommands from './getCommands';
-import path = require('path');
-import fs = require('fs');
 const TOKEN = process.env.BOT_TOKEN || '';
 export const COMMANDS_PATH = 'commands';
 
@@ -18,7 +17,8 @@ client.commands = getCommands() as Collection<any, any>;
 // Slash command responses
 interactionCreate(client);
 
-// When the client is ready, run this code (only once)
+// When the client is ready, run this code
 ready(client, startTime);
+
 // Log in to Discord with client's token
 client.login(TOKEN);

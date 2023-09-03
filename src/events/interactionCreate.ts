@@ -12,7 +12,10 @@ export default function interactionCreate(client: Client) {
 
 		try {
 			await command.execute(chatInputInteraction);
-			console.info(`${chatInputInteraction.user}: /${chatInputInteraction.commandName}`);
+			const datetime = new Date().toLocaleString('en-US', { hour12: false });
+			console.info(
+				`${datetime}: User ${chatInputInteraction.user.tag} issued /${chatInputInteraction.commandName}.`
+			);
 		} catch (error) {
 			console.error(error);
 			const payload = {

@@ -2,20 +2,19 @@ import path = require('path');
 import fs = require('fs');
 import { Collection, SlashCommandBuilder } from 'discord.js';
 import { COMMANDS_PATH } from '.';
+
+interface cmd {
+	data: SlashCommandBuilder;
+	execute: Function;
+}
 /**
  * Loads commands from a specified directory and returns either a Collection or an Array based on the value of type.
  * @param loadType - The type of commands to load. It can be either 'global' or any other value.
  * @returns If type is 'global', returns a Collection<any, any> containing the loaded commands. If type is not 'global', returns an Array<any> containing the JSON representations of the loaded commands.
  */
-export default function getCommands(): Collection<
-	string,
-	{ data: SlashCommandBuilder; execute: Function }
-> {
+export default function getCommands(): Collection<string, cmd> {
 	const foldersPath = path.join(__dirname, COMMANDS_PATH); // Path to ./src/commands
-	const clientCommands = new Collection<
-		string,
-		{ data: SlashCommandBuilder; execute: Function }
-	>();
+	const clientCommands = new Collection<string, cmd>();
 
 	for (const folder of fs.readdirSync(foldersPath)) {
 		const commandsPath = path.join(foldersPath, folder);

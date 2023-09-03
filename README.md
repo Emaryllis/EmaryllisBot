@@ -1,4 +1,4 @@
-# RavenBot - A Discord.JS TypeScript Template
+# RavenBot - A Discord Bot for Raven
 
 This is a template meant for Discord.JS developers who want to use TypeScript instead of JavaScript.
 

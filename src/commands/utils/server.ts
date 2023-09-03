@@ -1,4 +1,5 @@
 import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import { embedFooter } from '../../constants';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,34 +8,39 @@ module.exports = {
 		.setDMPermission(false),
 	async execute(interaction: CommandInteraction): Promise<void> {
 		try {
+			const { guild } = interaction;
 			const vanityURL =
-				interaction.guild.vanityURLCode === null
+				guild.vanityURLCode === null
 					? 'No Vanity URL'
-					: `https://discord.gg/${interaction.guild.vanityURLCode}`;
+					: `https://discord.gg/${guild.vanityURLCode}`;
 
-			// interaction.guild is the object representing the Guild in which the command was run
-			const serverInfoEmbed = new EmbedBuilder()
+			const createdTime = guild.createdTimestamp.toString().slice(0, -3);
+			const embed = new EmbedBuilder()
 				.setTitle('Server Information')
 				.addFields(
-					{ name: ' ', value: `Server Name: ${interaction.guild.name}` },
-					{ name: ' ', value: `Description: ${interaction.guild.description}` },
-					{ name: ' ', value: `Members: ${interaction.guild.memberCount}` },
-					{ name: ' ', value: `Server Owner: ${await interaction.guild.fetchOwner()}` },
-					{ name: ' ', value: `Created On: ${interaction.guild.createdTimestamp}` },
+					{ name: ' ', value: `Server Name: ${guild.name}` },
 					{
 						name: ' ',
-						value: `Onboarding: ${(await interaction.guild.fetchOnboarding()).enabled}`,
+						value: `Description: ${guild.description || 'No Description'}`,
 					},
-					{ name: ' ', value: `Server Owner: ${await interaction.guild.fetchOwner()}` },
-					{ name: ' ', value: `Server Owner: ${await interaction.guild.fetchOwner()}` },
-					{ name: ' ', value: `Server Owner: ${await interaction.guild.fetchOwner()}` },
-					{ name: ' ', value: `Server Owner: ${await interaction.guild.fetchOwner()}` },
+					{ name: ' ', value: `Members: ${guild.memberCount}` },
+					{ name: ' ', value: `Server Owner: ${await guild.fetchOwner()}` },
+					{
+						name: ' ',
+						value: `Created On: <t:${createdTime}:f> (<t:${createdTime}:R>)`,
+					},
+					{
+						name: ' ',
+						value: `Onboarding: ${
+							(await guild.fetchOnboarding()).enabled ? 'Yes' : 'Not Yet'
+						}`,
+					},
 					{ name: ' ', value: `Vanity URL: ${vanityURL}` }
 				)
 				.setTimestamp()
-				.setFooter({ text: `Made By ${interaction.client.application.owner}` });
+				.setFooter(embedFooter);
 
-			await interaction.reply({ embeds: [serverInfoEmbed] });
+			await interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			console.error(err);
 			await interaction.reply(err.message);

@@ -1,13 +1,13 @@
 {
-  "name": "discord.ts",
+  "name": "ravenbot",
   "version": "1.0.0",
-  "description": "A Discord.JS Bot",
+  "description": "A Discord Bot for Raven",
   "scripts": {
     "start": "nodemon --exec node --loader ts-node/esm/transpile-only --no-warnings src/index.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Raven-Code/Discord.TS.git"
+    "url": "git+https://github.com/Raven-Code/RavenBot.git"
   },
   "keywords": [
     "discord.js",
@@ -16,9 +16,9 @@
   "author": "Raven-Code",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Raven-Code/Discord.TS/issues"
+    "url": "https://github.com/Raven-Code/RavenBot/issues"
   },
-  "homepage": "https://github.com/Raven-Code/Discord.TS#readme",
+  "homepage": "https://github.com/Raven-Code/RavenBot#readme",
   "dependencies": {
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1"
