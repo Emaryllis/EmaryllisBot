@@ -4,6 +4,7 @@ import {
 	PermissionFlagsBits,
 	SlashCommandBuilder,
 } from 'discord.js';
+import MESSAGE, { cmd } from '../../constants';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,7 +27,7 @@ module.exports = {
 			// Check if interaction user is the owner of the bot
 		} else if ((await interaction.client.application.fetch()).owner != interaction.user) {
 			await interaction.reply(
-				`Reloaded \`${command.data.name}\` (**FAILED**)\n\n\`You are not the owner of this bot.\``
+				MESSAGE.reload.error(command.data.name, 'You are not the owner of this bot.')
 			);
 			return;
 		}
@@ -36,16 +37,19 @@ module.exports = {
 
 		try {
 			interaction.client.commands.delete(command.data.name); // Delete old command data
-			const newCommand = require(`./${command.data.name}.ts`); // Store new command data into cache using require
+			const newCommand: cmd = require(`./${command.data.name}.ts`); // Store new command data into cache using require
+
+			// Warn developer if command is missing a required property
+			if (!('data' in newCommand && 'execute' in newCommand)) {
+				console.warn(MESSAGE.slashHandler.missing(command.data.name));
+			}
 
 			// Store new command data back to client.commands
 			interaction.client.commands.set(newCommand.data.name, newCommand);
-			await interaction.reply(`Reloaded \`${newCommand.data.name}\` (Success)`);
-		} catch (error) {
-			console.error(error);
-			await interaction.reply(
-				`Reloaded \`${command.data.name}\` (**FAILED**)\n\n\`${error.message}\``
-			);
+			await interaction.reply(MESSAGE.reload.success(newCommand.data.name));
+		} catch (err) {
+			console.error(err);
+			await interaction.reply(MESSAGE.reload.error(command.data.name, err.message));
 		}
 	},
 };

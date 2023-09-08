@@ -1,12 +1,8 @@
 import path = require('path');
 import fs = require('fs');
-import { Collection, SlashCommandBuilder } from 'discord.js';
+import { Collection } from 'discord.js';
 import { COMMANDS_PATH } from '.';
-
-interface cmd {
-	data: SlashCommandBuilder;
-	execute: Function;
-}
+import MESSAGE, { cmd } from './constants';
 /**
  * Loads commands from a specified directory and returns either a Collection or an Array based on the value of type.
  * @param loadType - The type of commands to load. It can be either 'global' or any other value.
@@ -28,9 +24,7 @@ export default function getCommands(): Collection<string, cmd> {
 			if ('data' in command && 'execute' in command) {
 				clientCommands.set(command.data.name, command);
 			} else {
-				console.warn(
-					`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
-				);
+				console.warn(MESSAGE.slashHandler.missing(command.data.name));
 			}
 		}
 	}

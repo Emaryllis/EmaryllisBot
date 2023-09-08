@@ -1,10 +1,10 @@
 const startTime = Date.now(); // Importing modules takes time so putting it here instead of the bottom will give a more accurate startup time
 console.info('Bot starting up...');
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 import 'dotenv/config';
-import interactionCreate from './events/interactionCreate';
+import interactionCreate from './events/slashListener';
 import ready from './events/ready';
-import getCommands from './getCommands';
+import getCommands from './slashHandler';
 const TOKEN = process.env.BOT_TOKEN || '';
 export const COMMANDS_PATH = 'commands';
 
@@ -12,7 +12,7 @@ export const COMMANDS_PATH = 'commands';
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // Put command data to client as commands property for easy access
-client.commands = getCommands() as Collection<any, any>;
+client.commands = getCommands();
 
 // Slash command responses
 interactionCreate(client);
