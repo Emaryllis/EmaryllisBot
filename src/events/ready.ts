@@ -1,6 +1,6 @@
 import { Client, Events, REST, Routes } from 'discord.js';
-import resolveConstants from '../constants';
-import getCommands from '../getCommands';
+import MESSAGE, { resolveConstants } from '../constants';
+import getCommands from '../slashHandler';
 const TOKEN = process.env.BOT_TOKEN || '';
 const CLIENT_ID = process.env.CLIENT_ID || '';
 export default (client: Client, timeTaken: number): void => {
@@ -11,30 +11,28 @@ export default (client: Client, timeTaken: number): void => {
 	client.once(Events.ClientReady, async (c: Client) => {
 		try {
 			const cmdStartTime = Date.now();
-			console.info(`Started refreshing ${commands.length} application (/) commands.`);
+			console.info(MESSAGE.ready.refresh.start(commands.length));
 			// Register commands to Discord for users to use
 			const data = await new REST()
 				.setToken(TOKEN)
 				.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
 			console.info(
-				`Successfully refreshed ${Object.keys(data).length} application (/) commands. (${
-					Date.now() - cmdStartTime
-				}ms)`
+				MESSAGE.ready.refresh.success(Object.keys(data).length, Date.now() - cmdStartTime)
 			);
 		} catch (err) {
-			console.error(err);
+			console.error(MESSAGE.rawError(err.message));
 		}
 		const constStartTime = Date.now();
-		console.info('Started resolving constants.');
+		console.info(MESSAGE.ready.constant.start);
 		// Resolve Constants
 		try {
 			await resolveConstants(client);
-			console.info(`Successfully resolved constants. (${Date.now() - constStartTime}ms)`);
+			console.info(MESSAGE.ready.constant.success(Date.now() - constStartTime));
 		} catch (err) {
-			console.error(err);
+			console.error(MESSAGE.rawError(err.message));
 		}
 
 		// Finished registering slash commands and marks the bot as ready
-		console.info(`${c.user.tag} is ready! (${Date.now() - timeTaken}ms)`);
+		console.info(MESSAGE.ready.done(c.user.tag, Date.now() - timeTaken));
 	});
 };

@@ -1,5 +1,5 @@
 import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import { embedFooter } from '../../constants';
+import MESSAGE, { embedFooter } from '../../constants';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -43,7 +43,7 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 		} catch (err) {
 			console.error(err);
-			await interaction.reply(err.message);
+			await interaction.reply(MESSAGE.formatError(err.message));
 		}
 	},
 };
