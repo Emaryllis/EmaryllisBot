@@ -5,7 +5,7 @@ export let authorURL: string;
 export let embedFooter: { text: string; iconURL: string };
 export async function resolveConstants(client: Client): Promise<void> {
 	botAuthor = await client.users.fetch('595373310955749420');
-	authorURL = 'https://github.com/Raven-Code.png';
+	authorURL = 'https://github.com/Emaryllis.png';
 	embedFooter = {
 		text: `Made by ${botAuthor.tag}`,
 		iconURL: authorURL,

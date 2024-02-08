@@ -1,24 +1,24 @@
 {
-  "name": "ravenbot",
+  "name": "emaryllisbot",
   "version": "1.0.0",
-  "description": "A Discord Bot for Raven",
+  "description": "A Discord Bot for Emaryllis",
   "scripts": {
     "start": "nodemon --exec node --loader ts-node/esm/transpile-only --no-warnings src/index.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Raven-Code/RavenBot.git"
+    "url": "git+https://github.com/Emaryllis/EmaryllisBot.git"
   },
   "keywords": [
     "discord.js",
     "discord"
   ],
-  "author": "Raven-Code",
+  "author": "Emaryllis",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Raven-Code/RavenBot/issues"
+    "url": "https://github.com/Emaryllis/EmaryllisBot/issues"
   },
-  "homepage": "https://github.com/Raven-Code/RavenBot#readme",
+  "homepage": "https://github.com/Emaryllis/EmaryllisBot#readme",
   "dependencies": {
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1"
