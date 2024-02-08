@@ -1,4 +1,4 @@
-# EmaryllisnBot - A Discord Bot for Emaryllis
+# EmaryllisBot - A Discord Bot for Emaryllis
 
 This is a template meant for Discord.JS developers who want to use TypeScript instead of JavaScript.
 
