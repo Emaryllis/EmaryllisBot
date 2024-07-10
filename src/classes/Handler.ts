@@ -1,11 +1,10 @@
-import * as path from "path";
+import path from "path";
 import { glob } from "glob";
 import EmaryllisClient from "./EmaryllisClient";
 import Event from "./Event";
-import IHandler from "../interfaces/IHandler";
-import * as console from "console";
 import SubCommand from "./SubCommand";
 import Command from "./Command";
+import IHandler from "../interfaces/IHandler";
 
 export default class Handler implements IHandler {
     client: EmaryllisClient;

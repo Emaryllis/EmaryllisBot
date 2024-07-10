@@ -5,8 +5,6 @@ import IClient from "../interfaces/IClient";
 import Handler from "./Handler";
 import Command from "./Command";
 import SubCommand from "./SubCommand";
-import * as process from "process";
-import * as console from "console";
 
 export default class EmaryllisClient extends Client implements IClient {
     config: IConfig;
