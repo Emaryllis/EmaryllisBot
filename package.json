@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "A Discord Bot for Emaryllis",
   "scripts": {
-    "start": "nodemon --exec node --loader ts-node/esm/transpile-only --no-warnings src/index.ts"
+    "clean": "del /s /q build",
+    "build": "tsc --build",
+    "start": "npm run clean && npm run build && node build/index.js",
+    "startNoClean": "npm run build && node build/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +24,8 @@
   "homepage": "https://github.com/Emaryllis/EmaryllisBot#readme",
   "dependencies": {
     "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "glob": "^11.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
