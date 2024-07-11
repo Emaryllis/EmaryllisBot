@@ -10,31 +10,23 @@ export default class Test extends Command {
             description: 'A test command',
             category: Category.Utilities,
             default_member_permissions: PermissionsBitField.Flags.UseApplicationCommands,
-            dm_permission: true,
-            cooldown: 5,
+            dm_permission: false,
+            cooldown: 3,
             options: [
                 {
                     name: "first",
                     description: "First option",
-                    type: ApplicationCommandOptionType.String
+                    type: ApplicationCommandOptionType.Subcommand
                 },
                 {
                     name: "second",
                     description: "Second option",
-                    type: ApplicationCommandOptionType.String
+                    type: ApplicationCommandOptionType.Subcommand
                 }
             ]
         });
     }
 
     Execute(interaction: ChatInputCommandInteraction) {
-        interaction.reply({
-            content: 'Test command executed!',
-            ephemeral: true
-        });
-        // Log all option data
-        interaction.options.data.forEach(option => {
-            console.log(option.name, option.value);
-        });
     }
 }

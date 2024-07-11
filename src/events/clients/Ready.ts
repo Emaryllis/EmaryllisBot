@@ -40,7 +40,7 @@ export default class Ready extends Event {
             name: command.name,
             description: command.description,
             options: command.options,
-            default_member_permissions: command.default_member_permissions?.toString() ?? '0',
+            default_member_permissions: command.default_member_permissions?.toString(),
             dm_permission: command.dm_permission
         }));
     }

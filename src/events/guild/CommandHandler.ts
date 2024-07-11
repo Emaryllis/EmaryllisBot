@@ -17,10 +17,7 @@ export default class CommandHandler extends Event {
 
         const command: Command = this.client.commands.get(interaction.commandName)!;
         //@ts-ignore
-        if (!command) return interaction.reply({
-            content: 'Command not found.',
-            ephemeral: true
-        }) && this.client.commands.delete(interaction.commandName);
+        if (!command) return interaction.reply({content: 'Command not found.', ephemeral: true}) && this.client.commands.delete(interaction.commandName);
 
         const {cooldowns} = this.client;
         // Set a cooldown if there is none
@@ -49,18 +46,10 @@ export default class CommandHandler extends Event {
 
         /* Try to execute command or subcommand */
         try {
-            interaction.options.data.forEach(option => {
-                const subCommand = this.client.subCommands.get(`${interaction.commandName}.${option.name}`);
-                if (subCommand) subCommand.Execute(interaction);
-                else {
-                    interaction.reply({
-                        content: `There was an error while executing option \`${option.name}\`!`,
-                        ephemeral: true
-                    });
-                    console.warn(`Sub-command ${interaction.commandName}.${option.name} file not found!`);
-                }
-            })
-            if (!interaction.options.data[0]?.name) command.Execute(interaction);
+            const subCommandGroup = interaction.options.getSubcommandGroup(false);
+            const subCommand = `${interaction.commandName}${subCommandGroup ? `.${subCommandGroup}` : ''}.${interaction.options.getSubcommand(false) ?? ''}`;
+            // For some reason `this.client.subCommands.get(subCommand)?.Execute(interaction) ?? command.Execute(interaction)` doesn't work
+            return this.client.subCommands.get(subCommand) ? this.client.subCommands.get(subCommand)?.Execute(interaction) : command.Execute(interaction);
         } catch (err) {
             console.error(err);
             interaction.reply({
