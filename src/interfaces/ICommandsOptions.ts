@@ -8,4 +8,5 @@ export default interface ICommandsOptions {
     default_member_permissions: bigint;
     dm_permission: boolean;
     cooldown: number;
+    dev: boolean;
 }
