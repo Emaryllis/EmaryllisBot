@@ -6,6 +6,7 @@ import Handler from "./Handler";
 import Command from "./Command";
 import SubCommand from "./SubCommand";
 import IAuthor from "../interfaces/IAuthor";
+import { connect } from 'mongoose';
 
 export default class EmaryllisClient extends Client implements IClient {
     author: IAuthor;
@@ -29,9 +30,12 @@ export default class EmaryllisClient extends Client implements IClient {
         this.config = {
             token: process.env.TOKEN!,
             clientId: process.env.CLIENT_ID!,
+            mongoUrl: process.env.MONGO_URL!,
             devToken: process.env.DEV_TOKEN!,
             devClientId: process.env.DEV_CLIENT_ID!,
-            devGuildId: process.env.DEV_GUILD_ID!
+            devGuildId: process.env.DEV_GUILD_ID!,
+            devMongoUrl: process.env.DEV_MONGO_URL!,
+            devIds: [process.env.AUTHOR_ID!]
         }
         this.developmentMode = (process.argv.slice(2).includes('--development'));
         this.login(this.developmentMode ? this.config.devToken : this.config.token).then(_ => console.info("Logged in!")).catch(console.error);
@@ -43,12 +47,13 @@ export default class EmaryllisClient extends Client implements IClient {
         this.commands = new Collection();
         this.subCommands = new Collection();
         this.cooldowns = new Collection();
-
     }
 
     Init(): void {
         console.info(`Starting bot in ${this.developmentMode ? 'development' : 'production'} mode!`)
         this.LoadHandlers();
+
+        connect(this.developmentMode ? this.config.devMongoUrl : this.config.mongoUrl).then(_ => console.info("Connected to MongoDB!")).catch(console.error);
     }
 
     LoadHandlers(): void {

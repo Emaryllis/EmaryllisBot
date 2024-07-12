@@ -19,6 +19,9 @@ export default class CommandHandler extends Event {
         //@ts-ignore
         if (!command) return interaction.reply({content: 'Command not found.', ephemeral: true}) && this.client.commands.delete(interaction.commandName);
 
+        if (command.dev && !this.client.config.devIds.includes(interaction.user.id))
+            return interaction.reply({content: 'This command is only available for developers.', ephemeral: true});
+
         const {cooldowns} = this.client;
         // Set a cooldown if there is none
         if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
@@ -52,10 +55,7 @@ export default class CommandHandler extends Event {
             return this.client.subCommands.get(subCommand) ? this.client.subCommands.get(subCommand)?.Execute(interaction) : command.Execute(interaction);
         } catch (err) {
             console.error(err);
-            interaction.reply({
-                content: 'There was an error while executing this command!',
-                ephemeral: true
-            });
+            interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
         }
     }
 }

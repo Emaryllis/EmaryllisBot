@@ -44,6 +44,7 @@ export default class Handler implements IHandler {
 
             // If the file name contains a third part after splitting by '.',
             // it is considered a subcommand and added to the subCommands map
+            //@ts-ignore
             if (file.split('/').pop()?.split('.')[2]) {
                 if (command.name !== command.name.toLowerCase())
                     console.warn(`Sub-command ${command.name} not lowercase! (Sub-command file)`)

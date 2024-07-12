@@ -10,9 +10,6 @@ export default class TestArg1 extends SubCommand {
     }
 
     Execute(interaction: ChatInputCommandInteraction) {
-        interaction.reply({
-            content: 'Test command arg 2 was executed!',
-            ephemeral: true
-        });
+        interaction.reply({content: 'Test command arg 2 was executed!', ephemeral: true});
     }
 }
