@@ -32,9 +32,9 @@ export default class UserInfo extends Command {
         const user = await interaction.options.getUser('user') ?? interaction.user;
         await interaction.deferReply();
         const createdTime = user.createdTimestamp.toString().slice(0, -3);
-        const hexAccentColor = user.hexAccentColor; // Apparently you cant get a user's accent color twice
+        const hexAccentColor = user.hexAccentColor; // Apparently you can't get a user's accent color twice
         const fields: any = [
-            {name: ' ', value: `<@${user.id}>`},
+            {name: ' ', value: `<@${user.id}>${user.bot ? ' (Bot)' : ''}`},
             {name: ' ', value: `Accent Color: ${hexAccentColor ?? 'No Accent Color'}`}, // Bots don't have accent colors
             {name: ' ', value: `Avatar Decoration: ${user.avatarDecorationURL() ?? 'No Avatar Decoration'}`},
             {name: ' ', value: `Banner: ${user.bannerURL() ?? 'No Banner'}`},
