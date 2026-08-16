@@ -1,6 +1,6 @@
 # EmaryllisBot - A Discord Bot for Emaryllis
 
-This is a template meant for Discord.JS developers who want to use TypeScript instead of JavaScript.
+Abandoned project in favor of using a faster language (DPP)
 
 <p align='center'>
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Emaryllis/EmaryllisBot?style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FEmaryllis%2FEmaryllisBot">
